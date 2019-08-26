@@ -45,7 +45,7 @@ class DB {
             this.db.run(query, [login, password, name], err => !err ? resolve(this.getUserByLogin(login)) : resolve(null));
         });
 
-    addStudent = (userId, groupId, type) =>
+    addStudent = ({userId, groupId, type}) =>
         new Promise(resolve =>  {
             const query = 'INSERT INTO student (user_id, group_id, type) VALUES (?, (SELECT id FROM "group" WHERE "group".code = ?), ?)';
             this.db.run(query, [userId, groupId, type], err => resolve(!err));
