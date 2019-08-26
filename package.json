@@ -1,0 +1,25 @@
+{
+  "name": "note-students",
+  "version": "1.0.0",
+  "description": "ER-модель: <br />\r ![ER-Модель](https://github.com/sousageParty/noteStudent/raw/master/ER-model.jpg)",
+  "main": "app.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Intellcet/Note-Students.git"
+  },
+  "author": "Intellcet",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/Intellcet/Note-Students/issues"
+  },
+  "homepage": "https://github.com/Intellcet/Note-Students#readme",
+  "dependencies": {
+    "express": "^4.17.1",
+    "http": "0.0.0",
+    "socket.io": "^2.2.0",
+    "sqlite3": "^4.1.0"
+  }
+}
