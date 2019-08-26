@@ -2,7 +2,7 @@ const sqlite3 = require('sqlite3');
 
 class DB {
     constructor(options = {}) {
-        this.db = new sqlite3.Database(`${__dirname}/${options.settings.dbName}`)
+        this.db = new sqlite3.Database(`${__dirname}/${options.settings.dbName}`);
     }
 
     getUserByLogin = login =>
@@ -18,7 +18,7 @@ class DB {
     getUserByToken = token =>
         new Promise(resolve => {
             if (token) {
-                const query = 'SELECT * FROM user WHERE login=?';
+                const query = 'SELECT * FROM user WHERE token=?';
                 this.db.get(query, [token], (err, row) => resolve(err ? null : row));
             } else {
                 resolve(null);
@@ -35,7 +35,7 @@ class DB {
         new Promise(resolve => {
             if (token && Number(id)) {
                 const query = 'UPDATE user SET token=? WHERE id=?';
-                this.db.run(query, err => resolve(!err));
+                this.db.run(query, [token, id], err => resolve(!err));
             }
         });
 
@@ -62,7 +62,7 @@ class DB {
 
     getGroupsCodes = () =>
         new Promise(resolve => {
-            const query = 'SELECT code FROM group';
+            const query = 'SELECT code FROM "group"';
             this.db.all(query, (err, rows) => resolve(err ? null : rows));
         });
 
@@ -76,7 +76,7 @@ class DB {
         new Promise(resolve => {
             const query = "INSERT INTO student_on_lessons (admin_id, students_id, lesson_time_id, date, time) " +
                 "VALUES (?, ?, ?, date('now', 'localtime'), time('now', 'localtime'))";
-            this.db.run(query, err => resolve(!err));
+            this.db.run(query, [adminId, studentId, lessonId], err => resolve(!err));
         });
 
     getLessonByNum = lessonNum =>

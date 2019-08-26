@@ -20,8 +20,8 @@ class UserManager extends BaseManager {
 
     getActiveUsers = () => this.users;
 
-    getUserTypeByToken = ({ token }) => {
-        const user = this.db.getUserByToken(token);
+    getUserTypeByToken = async ({ token }) => {
+        const user = await this.db.getUserByToken(token);
         if (user) {
             return this.db.getStudentType(user.id);
         }
@@ -34,8 +34,8 @@ class UserManager extends BaseManager {
     getUsers = () => this.db.getUsers();
 
     // Регистрация. data = {login, password, name}
-    setUser = (data) => {
-        const result = this.db.addUser(data);
+    setUser = async data => {
+        const result = await this.db.addUser(data);
         if (result) {
             data.userId = result.userId;
             return this.mediator.get(this.triggers.SET_USER, data);
@@ -44,8 +44,8 @@ class UserManager extends BaseManager {
     };
 
     // Вход в систему. data = {login, password, rnd}
-    login = ({ login, password, rnd }) => {
-        const user = this.getUser({ login });
+    login = async ({ login, password, rnd }) => {
+        const user = await this.getUser({ login });
         if (user) {
             const passwordHash = md5( user.password + rnd );
             if (user && password === passwordHash ) {
@@ -60,8 +60,8 @@ class UserManager extends BaseManager {
         return false;
     };
 
-    logout = ({ token }) => {
-        const user = this.db.getUserByToken(token);
+    logout = async ({ token }) => {
+        const user = await this.db.getUserByToken(token);
         if (user) {
             this.db.setToken(user.id);
             return true;
