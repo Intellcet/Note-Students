@@ -9,6 +9,7 @@ const Mediator = require('./application/Mediator');
 const Router = require('./application/Router/Router');
 const DB = require('./application/modules/db/db');
 
+const WSManager = require('./application/modules/managers/WSManager');
 const UserManager = require('./application/modules/managers/UserManager');
 const StudentManager = require('./application/modules/managers/StudentManager');
 const GroupManager = require('./application/modules/managers/GroupManager');
@@ -22,6 +23,7 @@ app.use(express.urlencoded());
 app.use(express.static(`${__dirname}/public`));
 app.use(router);
 
+new WSManager({ mediator, db, io, socketEvents: settings.socketEvents });
 new UserManager({ mediator, db, socket: io, socketEvents: settings.socketEvents });
 new StudentManager({ mediator, db, socket: io, socketEvents: settings.socketEvents });
 new GroupManager({ mediator, db, socket: io, socketEvents: settings.socketEvents });
