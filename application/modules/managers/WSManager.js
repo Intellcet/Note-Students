@@ -11,15 +11,22 @@ function WSManager(options = {}) {
 
     function initSocket(socket) {
         const users = mediator.get(triggers.GET_ACTIVE_USERS);
-        const me = users[users.length - 1];
+        const usersKeys = Object.keys(users);
+        const me = users[usersKeys[usersKeys.length - 1]];
         if (me) {
             me.socketId = socket;
             io.local.emit(socketEvents.SEND_MESSAGE_TO_ALL, { text: `Пользователь ${me.name} подключился!`, id: me.id, name: me.name});
         }
     }
 
-    function getUserBySocketId(id) {
-        return mediator.get(triggers.GET_ACTIVE_USERS).find(user => user.socketId.id === id);
+    function getUserBySocketId(socket) {
+        const users = mediator.get(triggers.GET_ACTIVE_USERS);
+        return getUser(users, socket);
+    }
+
+    function getUser(users, socket) {
+        const key = Object.keys(users).find(user => users[user].socketId.id === socket.id);
+        return users[key];
     }
 
     function init() {
@@ -29,7 +36,7 @@ function WSManager(options = {}) {
             initSocket(socket);
 
             socket.on(socketEvents.SEND_MESSAGE, ({ text }) => {
-                const me = getUserBySocketId(socket.id);
+                const me = getUserBySocketId(socket);
                 if (me) {
                     io.local.emit(socketEvents.SEND_MESSAGE_TO_ALL, { text, id: socket.id, name: me.name });
                 }
@@ -37,10 +44,10 @@ function WSManager(options = {}) {
 
             socket.on(socketEvents.LOGOUT_CHAT, () => {
                 const users = mediator.get(triggers.GET_ACTIVE_USERS);
-                const me = users.find(user => user.socketId.id === socket.id);
+                const me = getUser(users, socket);
                 if (me) {
                     const text = `Пользователь ${me.name} отключился!`;
-                    users.splice(users.indexOf(me), 1);
+                    delete users[me.token];
                     io.local.emit(socketEvents.SEND_MESSAGE_TO_ALL, { text, id: socket.id, name: me.name });
                 }
             });

@@ -53,7 +53,7 @@ class StudentManager extends BaseManager {
     // Получить студентов, пришедших на пару data = { tokenAdmin, date, lessonNum }
     getStudentsOnLesson = async ({tokenAdmin, date, lessonNum }) => {
         const admin = new Student(await this.db.getStudentByToken(tokenAdmin));
-        if (admin && admin.type === 1 && admin.type === 2) {
+        if (admin && (admin.type === 1 || admin.type === 2)) {
             const lesson = await this.db.getLessonByNum(lessonNum);
             if (lesson) {
                 return this.db.getStudentsOnLesson({ adminId: admin.id, date, lessonId: lesson.id });

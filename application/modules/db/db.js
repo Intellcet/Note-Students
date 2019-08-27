@@ -53,11 +53,11 @@ class DB {
 
     getStudentByToken = token =>
         new Promise(resolve => {
-            const query = 'SELECT student.id AS student_id, student.group_id AS group_id, student.type AS type,' +
-                'user.id AS id, user.login AS login, user.password AS password, user.name AS name, user.token AS token' +
-                'FROM student JOIN user ON (student.user_id = user.id)' +
+            const query = 'SELECT student.id AS studentId, student.group_id AS groupId, student.type AS type, ' +
+                'user.id AS id, user.login AS login, user.password AS password, user.name AS name, user.token AS token ' +
+                'FROM student JOIN user ON (student.user_id = user.id) ' +
                 'WHERE user.token = ?';
-            this.db.get(query, [token], (err, row) => resolve(err ? null : row));
+            this.db.get(query, [token], (err, row) => resolve(err ? err : row));
         });
 
     getGroupsCodes = () =>
@@ -82,7 +82,7 @@ class DB {
     getLessonByNum = lessonNum =>
         new Promise(resolve => {
             const query = "SELECT * FROM lesson_time WHERE num_lesson = ?";
-            this.db.get(query, [lessonNum], (err, row) => resolve(err ? null : row));
+            this.db.get(query, [lessonNum], (err, row) => resolve(err ? err : row));
         });
 
     getStudentOnLesson = ({studentId, lessonId}) =>
@@ -105,7 +105,7 @@ class DB {
                "WHERE student_on_lessons.date = ? " +
                "AND student_on_lessons.admin_id = ? " +
                "AND student_on_lessons.lesson_time_id = ?";
-           this.db.all(query, [date, adminId, lessonId], (err, rows) => resolve(err ? null : rows));
+           this.db.all(query, [date, adminId, lessonId], (err, rows) => resolve(err ? err : rows));
         });
 
     getStudentType = id =>

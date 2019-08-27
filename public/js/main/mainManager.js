@@ -13,6 +13,7 @@ function MainManager(options) {
 
     const server = options.server;
     let socket = null;
+    const socketEvents = options.SOCKET_EVENTS;
 
     const mediator = options.mediator;
     const EVENTS = mediator.EVENTS;
@@ -23,12 +24,12 @@ function MainManager(options) {
     function showAdminInterface() {
         $('.main-block__content-admin').css('display', 'flex');
         $('.main-block__content-user').hide();
-        ui.adminEventHandler(true);
+        ui && ui.adminEventHandler(true);
     }
 
     function hideAdminInterface() {
         $('.main-block__content-admin').hide();
-        ui.adminEventHandler(false);
+        ui && ui.adminEventHandler(false);
     }
 
 
@@ -93,17 +94,36 @@ function MainManager(options) {
         server.noteStudent({code: code});
     }
 
+    async function logout() {
+        const result = await server.logout();
+        $('#qrcode').empty();
+        if (result.result === "ok" && socket) {
+            socket.emit(socketEvents.LOGOUT_CHAT);
+            showPage(PAGES.LOGIN);
+        }
+    }
+
+    async function getStudentsOnLesson(data) {
+        const answer = await server.getStudentsOnLesson(data);
+        if (answer.result === "ok") {
+            fillAdminTable(answer.data);
+        }
+    }
+
     function init() {
         mediator.subscribe(EVENTS.ADMIN_LOGIN, isAdminLogin);
         mediator.subscribe(EVENTS.SEND_CODE, sendCode);
-        mediator.subscribe(EVENTS.FILL_ADMIN_TABLE, fillAdminTable);
-        mediator.subscribe(EVENTS.SET_SOCKET, s => {
-            socket = null;
-            socket = s;
+        mediator.subscribe(EVENTS.LOGOUT, logout);
+        mediator.subscribe(EVENTS.GET_STUDENTS_ON_LESSON, getStudentsOnLesson);
+
+        mediator.subscribe(EVENTS.LOGGED_IN, () => {
+            console.log(123);
+            socket = io('http://localhost:8080');
             new Chat({...SETTINGS, socket});
-            ui = new UI({...options, ...{socket}});
+            ui = new UI(options);
             socket.on(SETTINGS.SOCKET_EVENTS.GET_STUDENTS_LIST, fillAdminTable);
         });
+
         $('.camera-on-btn').off('click').on('click', e => {
             camera.getStream();
         });
