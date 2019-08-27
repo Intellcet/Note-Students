@@ -53,7 +53,7 @@ function Login(options) {
                 localStorage.setItem('token', server.token);
                 $('.auth-reg-block__error-login-js').empty();
                 showPage(PAGES.MAIN);
-                mediator.call(EVENTS.SET_SOCKET, new Socket(SETTINGS.SOCKET_EVENTS));
+                mediator.call(EVENTS.LOGGED_IN);
                 mediator.call(EVENTS.ADMIN_LOGIN);
                 qrToken = localStorage.getItem('token'); /* Берём токен пользователя из лок.хранилища */
                 return;

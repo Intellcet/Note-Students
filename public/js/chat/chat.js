@@ -12,7 +12,6 @@ class Chat {
         this.socket.on(this.EVENT.SEND_MESSAGE_TO_ALL, data => this.getMessage(data));
         this.socket.on(this.EVENT.LOGOUT_CHAT, data => {
             this.getMessage(data);
-            this.socket.emit(this.EVENT.CLOSE)
         });
     }
 
@@ -25,9 +24,9 @@ class Chat {
     }
 
     getMessage(data) {
-        if (data['text'] !== '') {
+        if (data.text !== '') {
             let text = document.createElement("p");
-            text.innerHTML = `<b>${data['name']}:</b> ${data['text']}`;
+            text.innerHTML = `<b>${data.name}:</b> ${data.text}`;
             this.chatBlock.prepend(text);
         }
     }

@@ -8,14 +8,10 @@ function UI(options) {
 
     const $SELECTORS = options.$SELECTORS;
     const PAGES = options.PAGES;
-    const showPage = options.showPage instanceof Function ? options.showPage : () => {};
-    const server = options.server;
-    const socket = options.socket;
 
     const mediator = options.mediator;
     const EVENTS = mediator.EVENTS;
     const TRIGGERS = mediator.TRIGGERS;
-    const SOCKET_EVENTS = options.SOCKET_EVENTS;
 
     $SELECTORS.DATE = $('.main-block_date-js');
     $SELECTORS.SELECT = $('.main-block_select-js');
@@ -25,14 +21,7 @@ function UI(options) {
      * Функция-обработчик основных событий клиента
      */
     function baseEventHandler() {
-        $('.main-block__logout-button-js').off('click').on('click', async e => {
-            const result = await server.logout();
-            $('#qrcode').empty();
-            if (result.result === "ok") {
-                socket.emit(SOCKET_EVENTS.LOGOUT_CHAT);
-                showPage(PAGES.LOGIN);
-            }
-        });
+        $('.main-block__logout-button-js').off('click').on('click', e => mediator.call(EVENTS.LOGOUT));
     }
 
     /**
@@ -40,14 +29,10 @@ function UI(options) {
      */
     this.adminEventHandler = flag => {
         if (flag) {
-            $SELECTORS.LIST_BTN.off('click').on('click', async e => {
+            $SELECTORS.LIST_BTN.off('click').on('click', e => {
                 let date = $SELECTORS.DATE.val();
                 let lessonNum = $SELECTORS.SELECT.val();
-                const data = { date, lessonNum };
-                const answer = await server.getStudentsOnLesson(data);
-                if (answer.result === "ok") {
-                    mediator.call(EVENTS.FILL_ADMIN_TABLE, answer.data);
-                }
+                mediator.call(EVENTS.GET_STUDENTS_ON_LESSON, { date, lessonNum });
             });
             return;
         }

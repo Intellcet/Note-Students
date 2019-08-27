@@ -24,8 +24,9 @@ const SETTINGS = {
         EVENTS: {
             ADMIN_LOGIN: 'ADMIN_LOGIN',
             SEND_CODE: 'SEND_CODE',
-            FILL_ADMIN_TABLE: 'FILL_ADMIN_TABLE',
-            SET_SOCKET: 'SET_SOCKET',
+            GET_STUDENTS_ON_LESSON: 'GET_STUDENTS_ON_LESSON',
+            LOGGED_IN: 'SET_SOCKET',
+            LOGOUT: 'LOGOUT',
         },
         TRIGGERS: {
         }
