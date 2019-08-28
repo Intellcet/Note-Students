@@ -8,7 +8,7 @@
 6. check_student - проверка на то, чтобы при изменении одной записи админа в заданной группе еще нет
 */
 
-const settings = {
+export const settings = {
     dbName: 'projectDB.db',
     mediator: {
         events: {
@@ -39,5 +39,3 @@ const settings = {
         LOGOUT_CHAT: 'LOGOUT_CHAT',
     }
 };
-
-module.exports = settings;

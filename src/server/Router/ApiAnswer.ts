@@ -1,10 +1,14 @@
 // Класс для формирования стандартизованных ответов сервера
+type ApiError = {
+    [errorNum: number]: string;
+};
+
 class ApiAnswer {
-    static answer = (data) => {
+    static answer = (data: any) => {
         return { result: 'ok', data };
     };
 
-    errors = {
+    errors: ApiError = {
         1000: 'not enough parameters',
         2000: 'error with trying add to DB',
         2010: 'incorrect login/logout data',
@@ -14,10 +18,10 @@ class ApiAnswer {
         9000: 'unknown error'
     };
 
-    error = code => {
+    error = (code: number) => {
         const error = this.errors[code] || this.errors[9000];
         return { result: 'error', error };
     }
 }
 
-module.exports = ApiAnswer;
+export default ApiAnswer;

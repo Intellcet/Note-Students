@@ -1,7 +1,7 @@
 const express = require('express');
 const router = express.Router();
 
-const ApiAnswer = require('./ApiAnswer');
+import ApiAnswer from "./ApiAnswer";
 
 function Router(options = {}) {
     const { mediator, events, triggers } = options;
