@@ -3,10 +3,9 @@ import http from 'http'
 import socket from 'socket.io';
 
 import { settings } from './settings';
-const Mediator = require('./Mediator');
-const Router = require('./Router/Router');
-const DB = require('./modules/db/db');
-
+import Mediator from "./Mediator";
+import Router from './Router';
+import DB from './modules/db';
 const WSManager = require('./modules/managers/WSManager');
 const UserManager = require('./modules/managers/UserManager');
 const StudentManager = require('./modules/managers/StudentManager');
@@ -16,9 +15,9 @@ const app = express();
 const server = new http.Server(app);
 const io = socket(server);
 
-const db = new DB({ settings });
+const db = new DB({ dbName: settings.dbName });
 const mediator = new Mediator({ EVENTS: settings.mediator.events, TRIGGERS: settings.mediator.triggers });
-const router = new Router({ db, mediator, events: mediator.EVENTS, triggers: mediator.TRIGGERS });
+const router = new Router({ mediator, events: mediator.EVENTS, triggers: mediator.TRIGGERS }).getRouter();
 
 app.use(express.json());
 app.use(express.urlencoded());
