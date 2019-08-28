@@ -4,15 +4,15 @@ const http = require('http').Server(app);
 const io = require('socket.io')(http);
 
 const settings = require('./settings');
-const Mediator = require('./application/Mediator');
+const Mediator = require('./Mediator');
 
-const Router = require('./application/Router/Router');
-const DB = require('./application/modules/db/db');
+const Router = require('./Router/Router');
+const DB = require('./modules/db/db');
 
-const WSManager = require('./application/modules/managers/WSManager');
-const UserManager = require('./application/modules/managers/UserManager');
-const StudentManager = require('./application/modules/managers/StudentManager');
-const GroupManager = require('./application/modules/managers/GroupManager');
+const WSManager = require('./modules/managers/WSManager');
+const UserManager = require('./modules/managers/UserManager');
+const StudentManager = require('./modules/managers/StudentManager');
+const GroupManager = require('./modules/managers/GroupManager');
 
 const db = new DB({ settings });
 const mediator = new Mediator({ EVENTS: settings.mediator.events, TRIGGERS: settings.mediator.triggers });
@@ -20,7 +20,7 @@ const router = new Router({ db, mediator, events: mediator.EVENTS, triggers: med
 
 app.use(express.json());
 app.use(express.urlencoded());
-app.use(express.static(`${__dirname}/public`));
+app.use(express.static(`${process.cwd()}/src/client`));
 app.use(router);
 
 new WSManager({ mediator, db, io, socketEvents: settings.socketEvents });
