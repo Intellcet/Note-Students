@@ -6,10 +6,7 @@ import { settings } from './settings';
 import Mediator from "./Mediator";
 import Router from './Router';
 import DB from './modules/db';
-const WSManager = require('./modules/managers/WSManager');
-const UserManager = require('./modules/managers/UserManager');
-const StudentManager = require('./modules/managers/StudentManager');
-const GroupManager = require('./modules/managers/GroupManager');
+import { WSManager, StudentManager, GroupManager, UserManager } from './modules/managers';
 
 const app = express();
 const server = new http.Server(app);
@@ -25,8 +22,8 @@ app.use(express.static(`${process.cwd()}/src/client`));
 app.use(router);
 
 new WSManager({ mediator, db, io, socketEvents: settings.socketEvents });
-new UserManager({ mediator, db, socket: io, socketEvents: settings.socketEvents });
-new StudentManager({ mediator, db, socket: io, socketEvents: settings.socketEvents });
-new GroupManager({ mediator, db, socket: io, socketEvents: settings.socketEvents });
+new UserManager({ mediator, db, socketEvents: settings.socketEvents });
+new StudentManager({ mediator, db, io, socketEvents: settings.socketEvents });
+new GroupManager({ mediator, db, socketEvents: settings.socketEvents });
 
 server.listen(8080, () => console.log('The server has been started on port 8080'));

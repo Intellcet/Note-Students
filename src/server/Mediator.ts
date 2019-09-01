@@ -2,11 +2,11 @@ export type Event = {
     [eventName: string]: string;
 }
 
-type MediatorEvent = {
+export type MediatorEvent = {
     [eventName: string]: Function[];
 }
 
-type MediatorTrigger = {
+export type MediatorTrigger = {
     [triggerName: string]: Function;
 }
 

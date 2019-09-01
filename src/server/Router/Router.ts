@@ -43,7 +43,7 @@ class Router {
         router.post('/api/user', async (req, res) => {
             const { login, password, group, type, name } = req.body;
             if (login && password && group && type && name) {
-                const result = await mediator.get(triggers.SET_USER, { login, password, group, type, name });
+                const result = await mediator.get(triggers.SET_USER, { login, password, groupId: group, type, name });
                 if (result) {
                     return res.send(ApiAnswer.answer(result));
                 }

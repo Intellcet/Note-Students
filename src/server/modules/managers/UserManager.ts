@@ -1,14 +1,18 @@
-const md5 = require('md5');
+import md5 from 'md5';
+import BaseManager, {BaseOptions} from "./BaseManager";
+import { User } from "../struct";
 
-const BaseManager = require('./BaseManager');
-const User = require('../struct/User');
+type Users = {
+    [userToken: string]: User;
+}
 
 // Класс для описания методов для работы с пользователями
 class UserManager extends BaseManager {
-    users = {};
+    users: Users;
 
-    constructor(options) {
+    constructor(options: BaseOptions) {
         super(options);
+        this.users = {};
         this.mediator.set(this.triggers.GET_ACTIVE_USERS, this.getActiveUsers);
         this.mediator.set(this.triggers.GET_USER, this.getUser);
         this.mediator.set(this.triggers.GET_USER_TYPE_BY_TOKEN, this.getUserTypeByToken);
@@ -20,7 +24,7 @@ class UserManager extends BaseManager {
 
     getActiveUsers = () => this.users;
 
-    getUserTypeByToken = async ({ token }) => {
+    getUserTypeByToken = async ({ token }: { token: string }) => {
         const user = await this.db.getUserByToken(token);
         if (user) {
             return this.db.getStudentType(user.id);
@@ -29,22 +33,22 @@ class UserManager extends BaseManager {
     };
 
     // Получить пользователя по логину. data = {login}
-    getUser = ({ login }) => this.db.getUserByLogin(login);
+    getUser = ({ login }: { login: string }) => this.db.getUserByLogin(login);
 
     getUsers = () => this.db.getUsers();
 
     // Регистрация. data = {login, password, name}
-    setUser = async data => {
+    setUser = async (data: { login: string, password: string, name: string, userId?: number }) => {
         const result = await this.db.addUser(data);
         if (result) {
-            data.userId = result.userId;
+            data.userId = result.id;
             return this.mediator.get(this.triggers.SET_USER, data);
         }
         return null;
     };
 
     // Вход в систему. data = {login, password, rnd}
-    login = async ({ login, password, rnd }) => {
+    login = async ({ login, password, rnd }: { login: string, password: string, rnd: number }) => {
         const user = await this.getUser({ login });
         if (user) {
             const passwordHash = md5( user.password + rnd );
@@ -60,7 +64,7 @@ class UserManager extends BaseManager {
         return false;
     };
 
-    logout = async ({ token }) => {
+    logout = async ({ token }: { token: string }) => {
         const user = await this.db.getUserByToken(token);
         if (user) {
             this.db.setToken(user.id);
@@ -71,4 +75,4 @@ class UserManager extends BaseManager {
 
 }
 
-module.exports = UserManager;
+export default UserManager;

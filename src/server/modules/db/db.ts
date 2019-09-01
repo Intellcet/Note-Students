@@ -1,27 +1,11 @@
 import sqlite3 from 'sqlite3';
 
+import { UserOptions as User } from "../struct/User";
+import { StudentOptions as Student } from "../struct/Student";
+
 type DBOptions = {
     [dbName: string]: string;
 };
-
-type User = {
-    id: number;
-    login: string;
-    password: string;
-    name: string;
-    token: string;
-}
-
-type Student = {
-    id: number;
-    login: string;
-    password: string;
-    name: string;
-    token: string;
-    studentId: number;
-    groupId: number;
-    type: number;
-}
 
 type LessonTime = {
     id: number;
@@ -72,9 +56,9 @@ class DB {
             this.db.all(query, (err, rows) => resolve(err ? null : rows));
         });
 
-    setToken = (id: number, token: string | null): Promise<boolean> =>
+    setToken = (id: number, token?: string | null): Promise<boolean> =>
         new Promise(resolve => {
-            if (token && Number(id)) {
+            if (Number(id)) {
                 const query = 'UPDATE user SET token=? WHERE id=?';
                 this.db.run(query, [token, id], err => resolve(!err));
             }
