@@ -9,33 +9,33 @@
 */
 
 export const settings = {
-    dbName: 'projectDB.db',
-    mediator: {
-        events: {
-            GET_STUDENTS_LIST: 'GET_STUDENTS_LIST', // отправить старосте список студентов на паре
-        },
-        triggers: {
-            // О юзерах
-            GET_USERS: 'GET_USERS',
-            GET_ACTIVE_USERS: 'GET_ACTIVE_USERS',
-            GET_USER: 'GET_USER',
-            SET_USER: 'SET_USER',
-            GET_USER_TYPE_BY_TOKEN: 'GET_USER_TYPE_BY_TOKEN',
-            LOGIN: 'LOGIN',
-            LOGOUT: 'LOGOUT',
-            // О студентах
-            SET_STUDENT: 'SET_STUDENT',
-            NOTE_STUDENT: 'NOTE_STUDENT',
-            GET_STUDENTS_ON_LESSON: 'GET_STUDENTS_ON_LESSON',
-            // О группах
-            GET_GROUPS_CODES: 'GET_GROUPS_CODES',
-        },
+  dbName: 'projectDB.db',
+  mediator: {
+    events: {
+      GET_STUDENTS_LIST: 'GET_STUDENTS_LIST', // отправить старосте список студентов на паре
     },
-    socketEvents: {
-        START_CONNECTION: 'START_CONNECTION',
-        SEND_MESSAGE: 'SEND_MESSAGE',
-        SEND_MESSAGE_TO_ALL: 'SEND_MESSAGE_TO_ALL',
-        GET_STUDENTS_LIST: 'GET_STUDENTS_LIST',
-        LOGOUT_CHAT: 'LOGOUT_CHAT',
-    }
+    triggers: {
+      // О юзерах
+      GET_USERS: 'GET_USERS',
+      GET_ACTIVE_USERS: 'GET_ACTIVE_USERS',
+      GET_USER: 'GET_USER',
+      SET_USER: 'SET_USER',
+      GET_USER_TYPE_BY_TOKEN: 'GET_USER_TYPE_BY_TOKEN',
+      LOGIN: 'LOGIN',
+      LOGOUT: 'LOGOUT',
+      // О студентах
+      SET_STUDENT: 'SET_STUDENT',
+      NOTE_STUDENT: 'NOTE_STUDENT',
+      GET_STUDENTS_ON_LESSON: 'GET_STUDENTS_ON_LESSON',
+      // О группах
+      GET_GROUPS_CODES: 'GET_GROUPS_CODES',
+    },
+  },
+  socketEvents: {
+    START_CONNECTION: 'START_CONNECTION',
+    SEND_MESSAGE: 'SEND_MESSAGE',
+    SEND_MESSAGE_TO_ALL: 'SEND_MESSAGE_TO_ALL',
+    GET_STUDENTS_LIST: 'GET_STUDENTS_LIST',
+    LOGOUT_CHAT: 'LOGOUT_CHAT',
+  },
 };

@@ -7,7 +7,27 @@
     "start": "node src/server/app.ts",
     "start:server": "nodemon --exec babel-node ./src/server/app.ts --config-file ./babel-node.config.js --extensions .ts,.js --debug",
     "build:server": "babel ./src/server --out-dir ./build/server --config-file ./babel-node.config.js --extensions .ts",
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "lint:js": "eslint ./src/ --ext .js,.jsx,.ts,.tsx",
+    "lint:css": "stylelint ./src/**/*.{css,pcss}",
+    "lint": "npm run lint:js && npm run lint:css"
+  },
+  "husky": {
+    "hooks": {
+      "pre-commit": "lint-staged && npm run type-check && npm test"
+    }
+  },
+  "lint-staged": {
+    "src/**/*.{js,jsx,ts,tsx}": [
+      "prettier --write",
+      "eslint",
+      "git add"
+    ],
+    "src/client/**/*.{css,pcss}": [
+      "prettier --write",
+      "stylelint --fix --config stylelint.format.config.js",
+      "git add"
+    ]
   },
   "repository": {
     "type": "git",
