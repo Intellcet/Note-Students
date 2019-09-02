@@ -1,1 +1,3 @@
-/src/client/js/vendor/*.js
+/src/client/js
+/config/
+/scripts/

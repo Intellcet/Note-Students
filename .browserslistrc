@@ -3,4 +3,3 @@ ie >= 11
 not ie <= 9
 iOS >= 9
 not iOS <= 8
-not OperaMini

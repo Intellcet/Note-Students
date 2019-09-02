@@ -3,8 +3,6 @@ module.exports = {
   plugins: {
     'postcss-import': {},
     'postcss-mixins': {},
-    'postcss-for': {},
-    'postcss-each': {},
     'postcss-simple-vars': {},
     'postcss-calc': {},
     'postcss-custom-media': {},

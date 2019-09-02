@@ -4,17 +4,21 @@
   "description": "Веб-приложение, позволяющее отмечать студентов на занятиях",
   "main": "src/server/app.js",
   "scripts": {
-    "start": "node src/server/app.ts",
-    "start:server": "nodemon --exec babel-node ./src/server/app.ts --config-file ./babel-node.config.js --extensions .ts,.js --debug",
+    "start": "npm-run-all start:*",
+    "build": "npm-run-all build:*",
+    "start:client": "node ./scripts/start-client.js",
+    "build:client": "node ./scripts/build-client.js",
+    "start:server": "nodemon --exec babel-node ./src/server/app.ts --config-file ./babel-node.config.js --extensions .ts --debug",
     "build:server": "babel ./src/server --out-dir ./build/server --config-file ./babel-node.config.js --extensions .ts",
-    "test": "echo \"Error: no test specified\" && exit 1",
     "lint:js": "eslint ./src/ --ext .js,.jsx,.ts,.tsx",
     "lint:css": "stylelint ./src/**/*.{css,pcss}",
-    "lint": "npm run lint:js && npm run lint:css"
+    "lint": "npm run lint:js && npm run lint:css",
+    "type-check": "tsc",
+    "type-check:watch": "npm run type-check --watch"
   },
   "husky": {
     "hooks": {
-      "pre-commit": "lint-staged && npm run type-check && npm test"
+      "pre-commit": "lint-staged && npm run type-check"
     }
   },
   "lint-staged": {
@@ -23,7 +27,7 @@
       "eslint",
       "git add"
     ],
-    "src/client/**/*.{css,pcss}": [
+    "src/client/**/*.{pcss}": [
       "prettier --write",
       "stylelint --fix --config stylelint.format.config.js",
       "git add"
@@ -102,6 +106,7 @@
     "lint-staged": "^9.2.1",
     "mini-css-extract-plugin": "^0.8.0",
     "nodemon": "^1.19.1",
+    "npm-run-all": "^4.1.5",
     "optimize-css-assets-webpack-plugin": "^5.0.3",
     "postcss-calc": "^7.0.1",
     "postcss-custom-media": "^7.0.8",

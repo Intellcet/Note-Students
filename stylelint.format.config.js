@@ -1,3 +1,4 @@
+// eslint-disable-next-line @typescript-eslint/no-var-requires
 const stylelintConfig = require('./stylelint.config');
 
 const { plugins, rules } = stylelintConfig;

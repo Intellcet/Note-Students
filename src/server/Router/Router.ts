@@ -123,6 +123,10 @@ class Router {
         return res.send(this.error(3020));
       }
     );
+
+    router.get('/*', (req, res) => {
+      res.sendFile(process.cwd() + 'src/client/index.html');
+    });
   }
 
   getRouter() {
