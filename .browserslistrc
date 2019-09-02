@@ -1,0 +1,6 @@
+last 3 versions
+ie >= 11
+not ie <= 10
+iOS >= 9
+not iOS <= 8
+not OperaMini all

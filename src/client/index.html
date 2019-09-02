@@ -1,0 +1,137 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <title>NFC project</title>
+
+<!--    <link rel="stylesheet" href="css/main.css">-->
+
+    <!--vendor-->
+<!--    <script src="js/vendor/qrcode.min.js"></script>-->
+<!--    <script src="js/vendor/socket.io.client.js"></script>-->
+<!--    <script src="js/vendor/jsQR.js"></script>-->
+<!--    <script src="js/vendor/jquery-3.3.1.min.js"></script>-->
+<!--    <script src="js/vendor/md5.min.js"></script>-->
+    <!--settings-->
+<!--    <script src="js/settings.js"></script>-->
+    <!--mediator-->
+<!--    <script src="js/mediator.js"></script>-->
+    <!--server-->
+<!--    <script src="js/server/server.js"></script>-->
+    <!--login/registration-->
+<!--    <script src="js/login/login.js"></script>-->
+<!--    <script src="js/registration/registration.js"></script>-->
+    <!--main-->
+<!--    <script src="js/main/ui.js"></script>-->
+<!--    <script src="js/main/mainManager.js"></script>-->
+<!--    <script src="js/chat/chat.js"></script>-->
+<!--    <script src="js/main.js"></script>-->
+<!--    <script src="js/webCam/camera.js"></script>-->
+</head>
+<body>
+  <div id="root"></div>
+<!--<div class="main-container">-->
+<!--    <header class="main-container__header">-->
+<!--        <h1 class="main-container__title">noteStudent</h1>-->
+<!--        <button class="main-container__logout-button main-block__logout-button-js">Выйти</button>-->
+<!--    </header>-->
+<!--    <section class="main-container__content">-->
+<!--        <div class="chat-block">-->
+<!--            <div id="chat"></div>-->
+<!--            <div class="chat-block__interact">-->
+<!--                <input class="chat-block__input" id="message" type ="text" placeholder="Введите текст">-->
+<!--                <button class="chat-block__button" id="sendMessage">Отправить</button>-->
+<!--            </div>-->
+
+<!--        </div>-->
+
+<!--        <div class="main-block">-->
+
+<!--        <section class="main-block__content">-->
+
+
+<!--            <div class="main-block__content-user">-->
+<!--                 <div class="main-block__camera-container" style="margin-top: 10px">-->
+<!--                    <canvas height="320" width="480"></canvas><br>-->
+<!--                </div>-->
+<!--                <button class="main-block__button camera-on-btn">Включить камеру</button>-->
+<!--            </div>-->
+
+<!--            <div class="main-block__content-admin">-->
+<!--                <div class="main-block__input-block">-->
+<!--                    <input class="main-block__date main-block__input main-block_date-js" type="date">-->
+<!--                    <select class="main-block__number-of-lesson-select main-block__input main-block_select-js">-->
+<!--                        <option value="1">1</option>-->
+<!--                        <option value="2">2</option>-->
+<!--                        <option value="3">3</option>-->
+<!--                        <option value="4">4</option>-->
+<!--                        <option value="5">5</option>-->
+<!--                        <option value="6">6</option>-->
+<!--                        <option value="7">7</option>-->
+<!--                    </select>-->
+<!--                    <button class="main-block__button main-block__input main-block_list-btn-js">-->
+<!--                        Вывести список-->
+<!--                    </button>-->
+
+<!--                    <button class="main-block__button generateQrCode">QR-Code</button>-->
+
+<!--                </div>-->
+<!--                <div class="main-block__table-of-students-block">-->
+<!--                    <table class="main-block__table-of-students">-->
+<!--                        <thead>-->
+<!--                            <tr>-->
+<!--                                <th class="main-block__row-name">Имя студента</th>-->
+<!--                                <th class="main-block__row-group-name">Группа</th>-->
+<!--                                <th class="main-block__row-arrive-time">Время прибытия на пару</th>-->
+<!--                                <th class="main-block__row-late-time">Время опоздания</th>-->
+<!--                                <th class="main-block__row-begin-time">Время начала пары</th>-->
+<!--                                <th class="main-block__row-end-time">Время окончания пары</th>-->
+<!--                                <th class="main-block__row-date">Дата</th>-->
+<!--                            </tr>-->
+<!--                        </thead>-->
+<!--                        <tbody class="main-block__table-body-js"></tbody>-->
+<!--                    </table>-->
+<!--                </div>-->
+<!--                <div id="qrcode"></div>-->
+<!--            </div>-->
+<!--        </section>-->
+<!--    </div>-->
+<!--    </section>-->
+
+<!--</div>-->
+
+
+
+<!--    <div class="auth-reg-block">-->
+<!--        <div class="auth-reg-block__auth">-->
+<!--            <h1 class="auth-reg-block__title">Авторизация</h1>-->
+<!--            <div class="auth-reg-block__input-block">-->
+<!--                <input class="auth-reg-block__input auth-reg-block__input-login-js" type="text" placeholder="Введите ваш логин">-->
+<!--                <input class="auth-reg-block__input auth-reg-block__input-password-js" type="password" placeholder="Введите ваш пароль">-->
+<!--                <button class="auth-reg-block__button auth-reg-block__button-login-js">Войти</button>-->
+<!--                <p class="auth-reg-block__error auth-reg-block__error-login-js"></p>-->
+<!--            </div>-->
+<!--            <button id="go-to-reg-button" class="auth-reg-block__transition">Еще не зарегистрированы? Сделайте это!</button>-->
+<!--        </div>-->
+<!--        <div class="auth-reg-block__reg">-->
+<!--            <h1 class="auth-reg-block__title">Регистрация</h1>-->
+<!--            <div class="auth-reg-block__input-block">-->
+<!--                <input class="auth-reg-block__input auth-reg-block__reg__input-login-js" type="text" placeholder="Введите ваш логин">-->
+<!--                <input class="auth-reg-block__input auth-reg-block__reg__input-name-js" type="text" placeholder="Введите ФИО">-->
+<!--                <select class="auth-reg-block__select auth-reg-block__select-js"></select>-->
+<!--                <input class="auth-reg-block__input auth-reg-block__reg__input-password-js" type="password" placeholder="Введите ваш пароль">-->
+<!--                <input class="auth-reg-block__input auth-reg-block__reg__input-password-js" type="password" placeholder="Введите ваш пароль еще раз">-->
+<!--                <button class="auth-reg-block__button auth-reg-block__reg__button-js">Зарегистрироваться</button>-->
+<!--                <p class="auth-reg-block__error auth-reg-block__error-reg-js"></p>-->
+<!--            </div>-->
+<!--            <button id="go-to-auth-button" class="auth-reg-block__transition">Вернуться к авторизации</button>-->
+<!--        </div>-->
+        <!--<div class="auth-reg-block__auth-reg-choice-block">
+            <button id="go-to-reg-button" class="auth-reg-block__transition">Еще не зарегистрированы? Сделайте это!</button>
+            <button id="go-to-auth-button" class="auth-reg-block__transition">Вернуться к авторизации</button>
+        </div>-->
+<!--    </div>-->
+</body>
+</html>
