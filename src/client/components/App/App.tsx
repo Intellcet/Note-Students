@@ -5,6 +5,7 @@ import { BrowserRouter, Switch, Route } from 'react-router-dom';
 import { ROUTES } from '../../routes/Routes';
 import { MainPage, LoginPage, RegistrationPage, ErrorPage } from '../../pages';
 
+import '../../styles/common.pcss';
 import './App.pcss';
 
 // TODO:: чтобы открыть коррекутную заглушку, нужно комметировать Header, Footer, ChatWidget

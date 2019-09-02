@@ -1,12 +1,12 @@
-const path = require('path');
 const webpack = require('webpack');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 const MiniCssExtractPlugin = require('mini-css-extract-plugin');
+const helpers = require('./helpers');
 
 const getHtmlWebpackPlugin = () =>
   new HtmlWebpackPlugin({
     inject: 'body',
-    template: path.resolve(process.cwd(), 'src/client/index.html'),
+    template: helpers.resolvePath('src/client/index.html'),
   });
 
 const getMiniCssExtractPlugin = folder =>

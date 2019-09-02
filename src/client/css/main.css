@@ -3,7 +3,7 @@
 }
 
 body {
-    background-image: url("../img/bg.jpg");
+    background-image: url("../components/App/bg.jpg");
     font-family: Arial;
     margin: 0;
     padding: 8px;
