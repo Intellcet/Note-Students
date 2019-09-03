@@ -17,11 +17,10 @@ const isCorrectData = (
 class LoginManager {
   static token: string;
 
-  static error: string;
-
-  static parseAnswer(data: AxiosResponse<any>): string {
+  static parseAnswer(data: AxiosResponse<CorrectData | IncorrectData>): string {
     if (isCorrectData(data.data)) {
       this.token = data.data.result;
+      localStorage.setItem('token', data.data.result);
       return 'Logged In!';
     }
     return data.data.error;
