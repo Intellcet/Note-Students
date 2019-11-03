@@ -1,19 +1,18 @@
 import React, { Fragment, useState } from 'react';
-import { Redirect } from 'react-router-dom';
+import { Link, Redirect } from 'react-router-dom';
 import md5 from 'md5';
-import axios, { AxiosResponse } from 'axios';
 
 import { ROUTES } from '../../../../routes/Routes';
-
-import getApiRouteUrl from '../../../../utils/getApiRouteUrl';
+import { http, getApiRouteUrl } from '../../../../utils';
+import { ResponseDataType } from '../../../../types';
 
 import styles from './LoginForm.module.pcss';
-import { LoginResponse } from './LoginForm.models';
 
 const LoginForm = (): React.ReactElement => {
   const [login, setLogin] = useState('');
   const [password, setPassword] = useState('');
   const [message, setMessage] = useState('');
+  const [token, setToken] = useState(Boolean(localStorage.getItem('token')));
 
   const handleLoginChange = (ev: React.SyntheticEvent<HTMLInputElement>) => {
     const {
@@ -34,12 +33,12 @@ const LoginForm = (): React.ReactElement => {
       const rnd = Math.floor(Math.random() * 10000);
       const hash = md5(md5(login + password) + rnd);
       const url = getApiRouteUrl('user/login/', [login, hash, rnd.toString()]);
-      axios(url).then((value: AxiosResponse<LoginResponse>) => {
-        if (value.data.error) {
+      http<ResponseDataType>({ url }).then(value => {
+        if (value.response.error) {
           setMessage('Неверный логин и(или) пароль');
-        } else if (value.data.data) {
-          localStorage.setItem('token', value.data.data);
-          setMessage('Logged In!');
+        } else if (value.response.data) {
+          localStorage.setItem('token', value.response.data);
+          setToken(true);
         }
       });
     } else {
@@ -49,6 +48,7 @@ const LoginForm = (): React.ReactElement => {
 
   return (
     <Fragment>
+      {token && <Redirect exact={true} from={ROUTES.LOGIN} to={ROUTES.MAIN} />}
       <div className={styles.inputBlock}>
         <input
           value={login}
@@ -67,16 +67,11 @@ const LoginForm = (): React.ReactElement => {
         <button className={styles.button} onClick={handleLoginButtonClick}>
           Войти
         </button>
-        <p className={styles.error}>{message && message}</p>
+        {message && <p className={styles.error}>{message}</p>}
       </div>
-      <button className={styles.backToRegistration}>
-        <a href={ROUTES.REGISTRATION} className={styles.backToRegistrationLink}>
-          Еще не зарегистрированы? Сделайте это!
-        </a>
-      </button>
-      {(message === 'Logged In!' || localStorage.getItem('token')) && (
-        <Redirect to={ROUTES.MAIN} />
-      )}
+      <Link to={ROUTES.REGISTRATION} className={styles.backToRegistrationLink}>
+        Еще не зарегистрированы? Сделайте это!
+      </Link>
     </Fragment>
   );
 };

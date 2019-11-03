@@ -1,4 +1,4 @@
-export type LoginResponse = {
+export type ResponseType = {
   result: string;
   data?: string;
   error?: string;
