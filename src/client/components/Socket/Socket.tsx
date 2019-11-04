@@ -1,9 +1,7 @@
-import React, { useContext, useMemo, useState } from 'react';
-import io, { Server } from 'socket.io';
+import React, { useContext } from 'react';
+import io from 'socket.io-client';
 
-type SocketContextType = {
-  socket: Server;
-};
+type SocketContextType = SocketIOClient.Socket;
 
 type SocketProviderProps = {
   children: React.ReactNode;
@@ -11,9 +9,9 @@ type SocketProviderProps = {
 
 const initSocketContext = () => io('http://localhost:8080');
 
-const SocketContext = React.createContext<SocketContextType>({
-  socket: initSocketContext(),
-});
+const SocketContext = React.createContext<SocketContextType>(
+  initSocketContext()
+);
 
 export const useSocket = () => {
   const context = useContext(SocketContext);
@@ -27,16 +25,10 @@ export const useSocket = () => {
 
 const SocketProvider = (props: SocketProviderProps): React.ReactElement => {
   const { children } = props;
-  const [socket, setSocket] = useState({
-    socket: initSocketContext(),
-  });
-  useSocket();
-  const contextValue = useMemo(() => socket, [socket]);
+  const socket = useSocket();
 
   return (
-    <SocketContext.Provider value={contextValue}>
-      {children}
-    </SocketContext.Provider>
+    <SocketContext.Provider value={socket}>{children}</SocketContext.Provider>
   );
 };
 

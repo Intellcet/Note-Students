@@ -1,9 +1,13 @@
 import React, { useState } from 'react';
 
+import { useSocket } from '../../../../components/Socket';
+
 import styles from './Chat.module.pcss';
 
 const Chat = (): React.ReactElement => {
   const [message, setMessage] = useState('');
+
+  const socket = useSocket();
 
   const handleSendMessageButtonClick = (
     ev: React.SyntheticEvent<HTMLButtonElement>
