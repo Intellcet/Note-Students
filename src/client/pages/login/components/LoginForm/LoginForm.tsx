@@ -1,5 +1,5 @@
-import React, { Fragment, useState } from 'react';
-import { Link, Redirect } from 'react-router-dom';
+import React, { Fragment, useEffect, useState } from 'react';
+import { RouteComponentProps, Link, withRouter } from 'react-router-dom';
 import md5 from 'md5';
 
 import { ROUTES } from '../../../../routes/Routes';
@@ -8,11 +8,28 @@ import { ResponseDataType } from '../../../../types';
 
 import styles from './LoginForm.module.pcss';
 
-const LoginForm = (): React.ReactElement => {
+type LoginFormProps = RouteComponentProps;
+
+const isRedirectToMain = () => {
+  const token = localStorage.getItem('token') || '';
+  const url = getApiRouteUrl('user/login/', [token]);
+  return http<ResponseDataType>({ url }).then(
+    value => value.response.data && !value.response.error
+  );
+};
+
+const LoginForm = ({ history }: LoginFormProps): React.ReactElement => {
   const [login, setLogin] = useState('');
   const [password, setPassword] = useState('');
   const [message, setMessage] = useState('');
-  const [token, setToken] = useState(Boolean(localStorage.getItem('token')));
+
+  useEffect(() => {
+    isRedirectToMain().then(val => {
+      if (val) {
+        history.push(ROUTES.MAIN);
+      }
+    });
+  }, []);
 
   const handleLoginChange = (ev: React.SyntheticEvent<HTMLInputElement>) => {
     const {
@@ -38,7 +55,7 @@ const LoginForm = (): React.ReactElement => {
           setMessage('Неверный логин и(или) пароль');
         } else if (value.response.data) {
           localStorage.setItem('token', value.response.data);
-          setToken(true);
+          history.push(ROUTES.MAIN);
         }
       });
     } else {
@@ -48,7 +65,6 @@ const LoginForm = (): React.ReactElement => {
 
   return (
     <Fragment>
-      {token && <Redirect exact={true} from={ROUTES.LOGIN} to={ROUTES.MAIN} />}
       <div className={styles.inputBlock}>
         <input
           value={login}
@@ -76,4 +92,4 @@ const LoginForm = (): React.ReactElement => {
   );
 };
 
-export default LoginForm;
+export default withRouter(LoginForm);

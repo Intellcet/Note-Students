@@ -48,20 +48,6 @@ class WSManager {
     }
   }
 
-  initSocket(socket: Socket) {
-    const users = this.mediator.get(this.triggers.GET_ACTIVE_USERS);
-    const usersKeys = Object.keys(users);
-    const me = users[usersKeys[usersKeys.length - 1]];
-    if (me) {
-      me.socketId = socket;
-      this.io.local.emit(this.socketEvents.SEND_MESSAGE_TO_ALL, {
-        text: `Пользователь ${me.name} подключился!`,
-        id: me.id,
-        name: me.name,
-      });
-    }
-  }
-
   getUserBySocketId(socket: Socket) {
     const users = this.mediator.get(this.triggers.GET_ACTIVE_USERS);
     return this.getUser(users, socket);
@@ -82,29 +68,40 @@ class WSManager {
     );
     this.io.on('connection', socket => {
       console.log('user connected to WSManager ' + socket.id);
-      this.initSocket(socket);
 
-      socket.on(this.socketEvents.SEND_MESSAGE, ({ text }) => {
-        const me = this.getUserBySocketId(socket);
+      let user: User;
+
+      socket.on(this.socketEvents.NEW_USER_CAME, ({ token }) => {
+        const users = this.mediator.get(this.triggers.GET_ACTIVE_USERS);
+        const me = users[token];
         if (me) {
+          me.socketId = socket;
+          user = new User({ ...me });
           this.io.local.emit(this.socketEvents.SEND_MESSAGE_TO_ALL, {
-            text,
-            id: socket.id,
+            text: `Пользователь ${me.name} подключился!`,
+            id: me.id,
             name: me.name,
           });
         }
       });
 
+      socket.on(this.socketEvents.SEND_MESSAGE, ({ text }) => {
+        this.io.local.emit(this.socketEvents.SEND_MESSAGE_TO_ALL, {
+          text,
+          id: socket.id,
+          name: user.name,
+        });
+      });
+
       socket.on(this.socketEvents.LOGOUT_CHAT, () => {
         const users = this.mediator.get(this.triggers.GET_ACTIVE_USERS);
-        const me = this.getUser(users, socket);
-        if (me && me.token) {
-          const text = `Пользователь ${me.name} отключился!`;
-          delete users[me.token];
+        if (user && user.token) {
+          const text = `Пользователь ${user.name} отключился!`;
+          delete users[user.token];
           this.io.local.emit(this.socketEvents.SEND_MESSAGE_TO_ALL, {
             text,
             id: socket.id,
-            name: me.name,
+            name: user.name,
           });
         }
       });

@@ -14,6 +14,10 @@ class UserManager extends BaseManager {
     super(options);
     this.users = {};
     this.mediator.set(this.triggers.GET_ACTIVE_USERS, this.getActiveUsers);
+    this.mediator.set(
+      this.triggers.GET_ACTIVE_USER_BY_TOKEN,
+      this.getActiveUserByToken
+    );
     this.mediator.set(this.triggers.GET_USER, this.getUser);
     this.mediator.set(
       this.triggers.GET_USER_TYPE_BY_TOKEN,
@@ -23,9 +27,12 @@ class UserManager extends BaseManager {
     this.mediator.set(this.triggers.SET_USER, this.setUser);
     this.mediator.set(this.triggers.LOGIN, this.login);
     this.mediator.set(this.triggers.LOGOUT, this.logout);
+    this.mediator.set(this.triggers.IS_LOGGED_IN, this.alreadyLoggedIn);
   }
 
   getActiveUsers = () => this.users;
+
+  getActiveUserByToken = ({ token }: { token: string }) => this.users[token];
 
   getUserTypeByToken = async ({ token }: { token: string }) => {
     const user = await this.db.getUserByToken(token);
@@ -78,6 +85,15 @@ class UserManager extends BaseManager {
       }
     }
     return false;
+  };
+
+  alreadyLoggedIn = async ({ token }: { token: string }) => {
+    const user = await this.db.getUserByToken(token);
+    if (user) {
+      this.users[user.token] = new User({ ...user });
+      this.mediator.call(this.events.REINIT_SOCEKT);
+    }
+    return !!user;
   };
 
   logout = async ({ token }: { token: string }) => {

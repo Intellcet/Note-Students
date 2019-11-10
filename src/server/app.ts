@@ -4,6 +4,7 @@ import http from 'http';
 import socket from 'socket.io';
 
 import { settings } from './settings';
+import { SOCKET_EVENTS } from '../share/socketEvents';
 import Mediator from './Mediator';
 import Router from './Router';
 import DB from './modules/db';
@@ -39,23 +40,23 @@ const wsManager = new WSManager({
   mediator,
   db,
   io,
-  socketEvents: settings.socketEvents,
+  socketEvents: SOCKET_EVENTS,
 });
 const userManager = new UserManager({
   mediator,
   db,
-  socketEvents: settings.socketEvents,
+  socketEvents: SOCKET_EVENTS,
 });
 const studentManager = new StudentManager({
   mediator,
   db,
   io,
-  socketEvents: settings.socketEvents,
+  socketEvents: SOCKET_EVENTS,
 });
 const groupManager = new GroupManager({
   mediator,
   db,
-  socketEvents: settings.socketEvents,
+  socketEvents: SOCKET_EVENTS,
 });
 
 server.listen(8080, () =>

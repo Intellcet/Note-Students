@@ -13,15 +13,18 @@ export const settings = {
   mediator: {
     events: {
       GET_STUDENTS_LIST: 'GET_STUDENTS_LIST', // отправить старосте список студентов на паре
+      REINIT_SOCKET: 'REINIT_SOCKET',
     },
     triggers: {
       // О юзерах
       GET_USERS: 'GET_USERS',
       GET_ACTIVE_USERS: 'GET_ACTIVE_USERS',
+      GET_ACTIVE_USER_BY_TOKEN: 'GET_ACTIVE_USER_BY_TOKEN',
       GET_USER: 'GET_USER',
       SET_USER: 'SET_USER',
       GET_USER_TYPE_BY_TOKEN: 'GET_USER_TYPE_BY_TOKEN',
       LOGIN: 'LOGIN',
+      IS_LOGGED_IN: 'IS_LOGGED_IN',
       LOGOUT: 'LOGOUT',
       // О студентах
       SET_STUDENT: 'SET_STUDENT',
@@ -30,12 +33,5 @@ export const settings = {
       // О группах
       GET_GROUPS_CODES: 'GET_GROUPS_CODES',
     },
-  },
-  socketEvents: {
-    START_CONNECTION: 'START_CONNECTION',
-    SEND_MESSAGE: 'SEND_MESSAGE',
-    SEND_MESSAGE_TO_ALL: 'SEND_MESSAGE_TO_ALL',
-    GET_STUDENTS_LIST: 'GET_STUDENTS_LIST',
-    LOGOUT_CHAT: 'LOGOUT_CHAT',
   },
 };
