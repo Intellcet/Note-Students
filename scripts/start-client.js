@@ -13,6 +13,7 @@ const devServerConfig = {
   watchContentBase: true,
   clientLogLevel: 'none',
   hot: true,
+  https: true,
   historyApiFallback: true,
   watchOptions: {
     aggregateTimeout: 300,

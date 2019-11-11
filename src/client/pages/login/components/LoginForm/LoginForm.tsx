@@ -1,19 +1,35 @@
-import React, { Fragment, useState } from 'react';
-import { Redirect } from 'react-router-dom';
+import React, { Fragment, useEffect, useState } from 'react';
+import { RouteComponentProps, Link, withRouter } from 'react-router-dom';
 import md5 from 'md5';
-import axios, { AxiosResponse } from 'axios';
 
 import { ROUTES } from '../../../../routes/Routes';
-
-import getApiRouteUrl from '../../../../utils/getApiRouteUrl';
+import { http, getApiRouteUrl } from '../../../../utils';
+import { ResponseDataType } from '../../../../types';
 
 import styles from './LoginForm.module.pcss';
-import { LoginResponse } from './LoginForm.models';
 
-const LoginForm = (): React.ReactElement => {
+type LoginFormProps = RouteComponentProps;
+
+const isRedirectToMain = () => {
+  const token = localStorage.getItem('token') || '';
+  const url = getApiRouteUrl('user/login/', [token]);
+  return http<ResponseDataType>({ url }).then(
+    value => value.response.data && !value.response.error
+  );
+};
+
+const LoginForm = ({ history }: LoginFormProps): React.ReactElement => {
   const [login, setLogin] = useState('');
   const [password, setPassword] = useState('');
   const [message, setMessage] = useState('');
+
+  useEffect(() => {
+    isRedirectToMain().then(val => {
+      if (val) {
+        history.push(ROUTES.MAIN);
+      }
+    });
+  }, []);
 
   const handleLoginChange = (ev: React.SyntheticEvent<HTMLInputElement>) => {
     const {
@@ -34,12 +50,12 @@ const LoginForm = (): React.ReactElement => {
       const rnd = Math.floor(Math.random() * 10000);
       const hash = md5(md5(login + password) + rnd);
       const url = getApiRouteUrl('user/login/', [login, hash, rnd.toString()]);
-      axios(url).then((value: AxiosResponse<LoginResponse>) => {
-        if (value.data.error) {
+      http<ResponseDataType>({ url }).then(value => {
+        if (value.response.error) {
           setMessage('Неверный логин и(или) пароль');
-        } else if (value.data.data) {
-          localStorage.setItem('token', value.data.data);
-          setMessage('Logged In!');
+        } else if (value.response.data) {
+          localStorage.setItem('token', value.response.data);
+          history.push(ROUTES.MAIN);
         }
       });
     } else {
@@ -67,18 +83,13 @@ const LoginForm = (): React.ReactElement => {
         <button className={styles.button} onClick={handleLoginButtonClick}>
           Войти
         </button>
-        <p className={styles.error}>{message && message}</p>
+        {message && <p className={styles.error}>{message}</p>}
       </div>
-      <button className={styles.backToRegistration}>
-        <a href={ROUTES.REGISTRATION} className={styles.backToRegistrationLink}>
-          Еще не зарегистрированы? Сделайте это!
-        </a>
-      </button>
-      {(message === 'Logged In!' || localStorage.getItem('token')) && (
-        <Redirect to={ROUTES.MAIN} />
-      )}
+      <Link to={ROUTES.REGISTRATION} className={styles.backToRegistrationLink}>
+        Еще не зарегистрированы? Сделайте это!
+      </Link>
     </Fragment>
   );
 };
 
-export default LoginForm;
+export default withRouter(LoginForm);

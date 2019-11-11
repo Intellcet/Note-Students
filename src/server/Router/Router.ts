@@ -76,6 +76,17 @@ class Router {
       return res.send(this.error(2010));
     });
 
+    router.get('/api/user/login/:token', async (req, res) => {
+      const { token } = req.params;
+      const result = await mediator.get(triggers.IS_LOGGED_IN, {
+        token,
+      });
+      if (result) {
+        return res.send(ApiAnswer.answer(result));
+      }
+      return res.send(this.error(2010));
+    });
+
     // выход юзера
     router.get('/api/user/logout/:token', async (req, res) => {
       const { token } = req.params;

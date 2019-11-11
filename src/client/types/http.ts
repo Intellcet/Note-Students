@@ -8,6 +8,12 @@ type ResponseType =
   | 'blob'
   | 'document';
 
+export type ResponseDataType = {
+  result: string;
+  data?: any;
+  error?: string;
+};
+
 export type HttpRequest = {
   method?: HttpMethod;
   url: string;
